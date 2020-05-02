@@ -7,6 +7,14 @@ public class Counter {
         this.number = number;
     }
 
+    public synchronized void increment() {
+        this.number++;
+    }
+
+    public synchronized void decrement() {
+        this.number--;
+    }
+
     public int getNumber() {
         return number;
     }

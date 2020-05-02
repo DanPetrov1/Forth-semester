@@ -18,9 +18,9 @@ public class MainController {
     HashMap<Integer, Double> hashMap = new HashMap<Integer, Double>();
 
     @RequestMapping(value = "/calculate", method = RequestMethod.GET)
-    public synchronized String calculate(Model model, @RequestParam("param1") String first, @RequestParam("param2") String second,
+    public String calculate(Model model, @RequestParam("param1") String first, @RequestParam("param2") String second,
                             @RequestParam("param3") String act) {
-        counter.setNumber(counter.getNumber() + 1);
+        counter.increment();
         ArithmeticRequest request = new ArithmeticRequest(Double.parseDouble(first), Double.parseDouble(second), act);
         double result = 0;
         if (hashMap.containsKey(request.hashCode())) {
@@ -28,6 +28,7 @@ public class MainController {
         } else {
             if (!act.equals("+") && !act.equals("-") && !act.equals("*") && !act.equals("/")) {  //%2b = '+'
                 model.addAttribute("Error", "We can't calculate it!");
+                counter.decrement();
                 return "calculate";
             }
             switch (act) {
@@ -55,7 +56,7 @@ public class MainController {
             hashMap.put(request.hashCode(), result);
         }
         model.addAttribute("Result", result);
-        counter.setNumber(counter.getNumber() - 1);
+        counter.decrement();
         return "calculate";
     }
 
