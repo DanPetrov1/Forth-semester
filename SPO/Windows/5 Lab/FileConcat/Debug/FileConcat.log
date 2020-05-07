@@ -1,0 +1,3 @@
+﻿  Source.cpp
+D:\Documents\СПОВМ\laba_5\FileConcat\Source.cpp(105,9): warning C4101: temp: неиспользованная локальная переменная
+  FileConcat.vcxproj -> D:\Documents\СПОВМ\laba_5\Debug\FileConcat.dll
