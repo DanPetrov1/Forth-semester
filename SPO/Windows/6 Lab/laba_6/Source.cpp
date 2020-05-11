@@ -119,7 +119,7 @@ void* myRealloc(void* ptr, int newSize)
 {
 
 	HLOCAL hmemLoDiscard = (char*)ptr - sizeof(HLOCAL);
-	HLOCAL hmemLoDiscard2 = LocalReAlloc(hmemLoDiscard, newSize, NULL);
+	LocalReAlloc(hmemLoDiscard, newSize, NULL);
 	
 	if (hmemLoDiscard == NULL)
 	{
