@@ -1,4 +1,5 @@
 #include <windows.h>
+#include <string>
 #include <iostream>
 
 void* memoryAllocation(int size);
@@ -14,13 +15,21 @@ int main()
 		myFree(tmp);
 		return 0;
 	}
-	std::cin >> tmp;
-	std::cout << tmp;
-	//myFree(tmp);
-
+	if (!std::cin.getline(tmp, 20)) {
+		std::cout << "Error in input!";
+		myFree(tmp);
+		return 0;
+	}
+	else {
+		std::cout << tmp << std::endl;
+	}
 	tmp = (char*)myRealloc(tmp, 30);
 	if (!tmp) return 0;
-	std::cin >> tmp;
+	if (!std::cin.getline(tmp, 30)) {
+		std::cout << "Error in input!";
+		myFree(tmp);
+		return 0;
+	}
 	std::cout << tmp;
 	myFree(tmp);
 
@@ -110,8 +119,8 @@ void* myRealloc(void* ptr, int newSize)
 {
 
 	HLOCAL hmemLoDiscard = (char*)ptr - sizeof(HLOCAL);
-	hmemLoDiscard = LocalReAlloc(hmemLoDiscard, newSize, NULL);
-
+	HLOCAL hmemLoDiscard2 = LocalReAlloc(hmemLoDiscard, newSize, NULL);
+	
 	if (hmemLoDiscard == NULL)
 	{
 		std::cout << std::endl << "Error in locking block";
