@@ -10,21 +10,10 @@ minBorder dw 2 dup(?)
 
 newl     EQU 0Ah, 0Dh
 MAX_EL   dw  10
-; 
-; msgElArray  db "Write the elements of array:", newl, '$'
-; msgRangeL   db newl, "Write the lower end of range: ", newl, '$'
-; msgRangeH   db newl, "Write higher end of range: ", newl, '$'
-; msgArrLen   db newl, "Recognized numbers: ", '$'
-; msgResult   db newl, "Number of matches: ", '$'
-; msgError    db newl, "Error! Code: ", '$'
-; msgNewl     db newl, '$'
-; 
 
 counter dw 2 dup(?)
 
-matrix  dw 30 dup(?)
-string  dw 6 dup(?)
-array  dw 6 dup(1)
+matrix  dw 10 dup(?)
 resultCount db "Result count:",10,13,'$'
 message db "Max mul:",10,13,'$'
 messageEnd db "Row number:",10,13,'$'
@@ -32,16 +21,6 @@ error db "Error, repeat input,please",10,13,'$'
 overflow db "Overflow",10,13 , '$'
 inputMax db "Write max border:",10,13,'$'
 inputMin db "Write min border:",10,13,'$'
-
-; strInput    db 255, ?, 255 DUP(?);numbers in string form
-; numAmount   dw ?                 ;size of number array
-; numArray    dw MAX_EL DUP(?)     ;prepared array of signed numbers
-; strRangeL   db 7, ?, 7 DUP(?)    ;low bound in string form
-; rangeLow    dw ?                 ;same as a signed number
-; strRangeH   db 7, 8 DUP(?)    ;high bound in string form
-; rangeHigh   dw ?                 ;same as a signed number
-; strResult   db 7 DUP(?)          
-; valResult   db ?
 
 .code
     jmp start
@@ -289,11 +268,6 @@ start:
     
     mov [maxBorder], ax
     
-;     mov ah, 2
-;     mov dl, 10
-;     int 21h
-;     mov dl, 13
-;     int 21h 
     
     mov dx, offset inputMin
     mov ah, 9
