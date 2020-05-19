@@ -4,8 +4,8 @@
 leftRangePlatf db 35
 rightRangePlatf db 45 
 k db 10 
-gameOptions1 db "a-left" 
-gameOptions2 db "d-right"
+gameOptions1 db "1-left" 
+gameOptions2 db "2-right"
 platform db "          " 
 ball db 'o'
 yRange db 23  
@@ -119,7 +119,7 @@ writeStart:
      mov cx,6
      call writeInVidMem 
      
-checkgenerate: 
+checkgenerate:                ;generate number from 0 to 3 for X-change (Y-change = 1)   
     neg naprX     
     
     xor dx,dx
@@ -152,17 +152,17 @@ game:
     
     call checkWin 
     
-    mov     cx,1h
+    mov     cx,1h                 ;time delay
     mov     dx, 189h
     mov     ah, 86h
     int     15h 
        
-    mov ah,1h
+    mov ah,1h           ;get char
     int 16h       
        
-    cmp al,'d'
+    cmp al,'1'          ;1 - right, 2 - left
     je right  
-    cmp al,'a'
+    cmp al,'2'
     je left  
     
 change: 
@@ -181,15 +181,15 @@ change:
     
 paintOldBall:      
     
-    mov px,dl
+    mov px,dl                 ;last coords of the ball
     mov py,dh 
     
-    mov al,' '
+    mov al,' '          ;clear last place of ball
     mov bl,0
     mov cx,1        
     call writeChars           
     
-   changePos:    
+   changePos:          ; change positon and generated numbers
      dec vx  
      add dl,naprX
      cmp vx,0 
@@ -220,14 +220,14 @@ newPos:
     mov al,yTemp
     mov vy,al   
    
-    cmp dl,leftRangePlatf
+    cmp dl,leftRangePlatf     ; look for border of the platform
     jl checkX1
     cmp dl,rightRangePlatf 
     jg checkX1 
     cmp dh,yRange  
     je reboundPlatform   
            
-checkX1:   
+checkX1:                        ; look for beating with the walls
     cmp dl,79   
     jge rightWalls   
     
@@ -304,7 +304,7 @@ onlyBlok:
     mov py,dh    
     call paintScore
  
-compare:    
+compare:                       ; look for corners and walls 
  
     cmp dl,leftRangePlatf            
     jl checkWalls
@@ -370,7 +370,7 @@ leftWalls:
     call leftWallsProc
    jmp game         
    
-rightProc proc        
+rightProc proc                           ;
   pusha    
    cmp rightRangePlatf,79
    jg exitFromFun     
@@ -509,7 +509,7 @@ reboundPlatformProc proc
     cmp dl,1
     jge nextCheckAfterPlatf
     mov dl,0 
-    neg naprX  
+    neg naprX        ; change speed for x
     add dl,naprX
     jmp write  
     
@@ -517,7 +517,7 @@ reboundPlatformProc proc
     cmp dl,78
     jle write
     mov dl,79 
-    neg naprX 
+    neg naprX        ; change speed for x
     add dl,naprX
     
     write:  
@@ -546,7 +546,7 @@ upWallsProc proc
     mov al,' '
     mov bl,0
     call writeChars
-    neg naprY                
+    neg naprY      ; change speed for y           
     
     popa
     ret    
@@ -737,9 +737,9 @@ pusha
     mov px,dl 
     mov py,dh 
      
-    cmp ah,16
-    jl game
-    cmp dh,3
+    cmp ah,16           ;if it's a corner look for a block near
+    jl game             ;or under
+    cmp dh,3            ;so change y speed
     jge game
     neg naprY  
  
